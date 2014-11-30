@@ -54,7 +54,7 @@ public class Display extends Canvas implements Runnable {
 		addFocusListener(input);
 	}
 
-	private void start() {
+	public synchronized void start() {
 		if (running)
 			return;
 		running = true;
@@ -62,7 +62,7 @@ public class Display extends Canvas implements Runnable {
 		thread.start();
 	}
 
-	private void stop() {
+	public synchronized void stop() {
 		if (!running)
 			return;
 		running = false;
@@ -86,6 +86,7 @@ public class Display extends Canvas implements Runnable {
 			long passedTime = currentTime - previousTime;
 			previousTime = currentTime;
 			unprocessedSeconds += passedTime / 1000000000.0;
+			requestFocus();
 
 			while (unprocessedSeconds > secondsPerTick) {
 				tick();
